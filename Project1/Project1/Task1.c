@@ -19,15 +19,7 @@ int** new(int size_x, int size_y)
 
 int** delete(int** matrix)
 {
-	int size_x = sizeof(matrix) / sizeof(matrix[0]);
-	printf("%d", size_x);
-	for (int i = 0; i < size_x; i++)
-	{
-		free(matrix[i]);
-	}
-	free(matrix);
 
-	return(matrix);
 }
 
 
@@ -38,8 +30,9 @@ void Matrix()
 	setlocale(0, "ru");
 
 	int** matrix = new(10, 10);
+
 	matrix[0][0] = 10;
-	printf("%d", matrix[0][0]);
-	matrix = delete(matrix);
-	printf("%d", matrix[0][0]);
+	printf("%d\n", matrix[0][0]);
+
+	
 }
