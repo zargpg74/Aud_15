@@ -6,13 +6,15 @@
 
 #include"Task1.h"
 
-struct Size_matrix
+const int N = 2;//количество матриц для умножения
+
+struct Size_matrix//структура для хранения размеров матриц
 {
 	int string;
 	int columns;
 } size;
 
-int** new(int string, int columns)
+int** new(int string, int columns)//выделение памяти под матрицу
 {
 	int** massive = (int**)malloc(string * sizeof(int*));
 	for (int i = 0; i < string; i++)
@@ -23,7 +25,7 @@ int** new(int string, int columns)
 	return(massive);
 }
 
-int** delete(int** matrix)
+int** delete(int** matrix)//очистка памяти, выделенной под матрицу
 {
 	for (int i = 0; i < size.string; i++)
 	{
@@ -34,7 +36,7 @@ int** delete(int** matrix)
 	return(matrix);
 }
 
-int** cin(int** matrix)
+int** cin(int** matrix)//ввод матрицы
 {
 	for (int i = 0; i < size.string; i++)
 	{
@@ -47,7 +49,7 @@ int** cin(int** matrix)
 	return(matrix);
 }
 
-int cout(int** matrix)
+int cout(int** matrix)//вывод матрицы
 {
 	for (int i = 0; i < size.string; i++)
 	{
@@ -66,27 +68,25 @@ void Matrix()
 	printf("Task 1\n");
 	setlocale(0, "ru");
 
-	struct Size_matrix* count = (struct Size_matrix*)malloc(2 * sizeof(struct Size_matrix));
+	struct Size_matrix* count = (struct Size_matrix*)malloc(2 * sizeof(struct Size_matrix));//массив, который будет хранить матрицы
 
-	printf("размер матрицы 1\n:");
-	scanf_s("%d", count[0].string);
-
-
-	scanf_s("%d", count[0].string);
-	scanf_s("%d", count[0].columns);
-	scanf_s("%d", count[1].string);
-	scanf_s("%d", count[1].columns);
+	for (int i = 0; i < N; i++)
+	{
+		printf("Введите размер матрицы %d\n:", i + 1);
+		scanf_s("%d", &count[i].string);
+		printf(":");
+		scanf_s("%d", &count[i].columns);
+	}
 
 	int** matrix_1 = new(count[0].string, count[0].columns);
 	int** matrix_2 = new(count[1].string, count[1].columns);
 
 	cin(matrix_1);
 	printf("\n");
+	cout(matrix_1);
+
+	printf("\n");
 	cin(matrix_2);
 	printf("\n");
-
-	cout(matrix_1);
-	printf("\n");
 	cout(matrix_2);
-	printf("\n");
 }
