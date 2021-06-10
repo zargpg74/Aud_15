@@ -29,27 +29,23 @@ int** new(int string, int columns)//выделение пам€ти под матрицу
 	return(matrix);
 }
 
-int** new_matrix(int** matrix)//функци€ дл€ перезаписи матрицы в новую, только полезную часть
+//функци€ записывает в новую матрицу исходую, только с полезными данными
+int** new_matrix(int** matrix)
 {
-	int string = matrix[0][0];
-	int columns = matrix[0][1];
-
-	int** matr = (int**)malloc(string * sizeof(int*));
-	for (int i = 0; i < string; i++)
+	int** matr = (int**)malloc((matrix[0][0] - 1) * sizeof(int*));
+	for (int i = 0; i < matrix[0][0] - 1; i++)
 	{
-		matr[i] = (int*)malloc(columns * sizeof(int));
+		matr[i] = (int*)malloc(matrix[0][1] * sizeof(int));
 	}
 
 	int index = 0;
-	for (int i = 1; i < string; i++)
+	for (int i = 1; i < matrix[0][0]; i++)
 	{
-		for (int j = 0; j < columns; j++)
+		for (int j = 0; j < matrix[0][1]; j++)
 		{
 			matr[index][j] = matrix[i][j];
-			printf("%d ", matr[index][j]);
-			index++;
 		}
-		printf("\n");
+		index++;
 	}
 
 	return matr;
@@ -92,6 +88,14 @@ int cout(int** matrix)//вывод матрицы
 	}
 }
 
+int error_multiplication(int columns, int string)
+{
+	if (columns == string)
+		return 1;
+	else
+		return 0;
+}
+
 
 int** multiplication(int** matrix_1, int** matrix_2)//умножение матриц
 {
@@ -104,10 +108,25 @@ int** multiplication(int** matrix_1, int** matrix_2)//умножение матриц
 	string_2 = matrix_2[0][0] - 1;
 	columns_2 = matrix_2[0][1];
 
-
 	//перезапишем полезные матрицы в новые, дл€ удоства работы
 	int** matr_1 = new_matrix(matrix_1);
 	int** matr_2 = new_matrix(matrix_2);
+
+	int** rezult = new(string_1, columns_2);
+
+	for (int i = 0; i < string_1; i++)
+	{
+		for (int j = 0; j < columns_2; j++)
+		{
+			rezult[i][j] = 0;
+			for (int k = 0; k < columns_1; k++)
+			{
+				rezult[i][j] += matr_1[i][k] * matr_2[k][j];
+			}
+		}
+	}
+
+	return(rezult);
 }
 
 
@@ -127,15 +146,29 @@ void Matrix()
 		scanf_s("%d", &size_matrix[i+1]);
 	}
 
+	int error = error_multiplication(size_matrix[1], size_matrix[2]);
+	if (error == 0)
+	{
+		system("cls");
+		printf("Error.ћатрицы перемножить невозможно!");
+		exit(error);
+	}
+
 	int** matrix_1 = new(size_matrix[0], size_matrix[1]);
 	int** matrix_2 = new(size_matrix[2], size_matrix[3]);
 
 	cin(matrix_1);
 	cin(matrix_2);
 
+	printf("»сходные матрицы: \n");
 	cout(matrix_1);
 	printf("\n");
 	cout(matrix_2);
 
-	multiplication(matrix_1, matrix_2);
+
+	int**rezult = multiplication(matrix_1, matrix_2);
+
+
+	delete(matrix_1);
+	delete(matrix_2);
 }
