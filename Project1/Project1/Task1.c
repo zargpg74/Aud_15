@@ -112,8 +112,9 @@ int** multiplication(int** matrix_1, int** matrix_2)//умножение матриц
 	int** matr_1 = new_matrix(matrix_1);
 	int** matr_2 = new_matrix(matrix_2);
 
-	int** rezult = new(string_1, columns_2);
+	int** rezult = new(string_1, columns_2);//массив для результата умножения
 
+	//умножение
 	for (int i = 0; i < string_1; i++)
 	{
 		for (int j = 0; j < columns_2; j++)
@@ -126,9 +127,42 @@ int** multiplication(int** matrix_1, int** matrix_2)//умножение матриц
 		}
 	}
 
+	//сдвигаем строки матрицы результата на одну вниз
+	for (int i = string_1; i >= 1; i--)
+	{
+		for (int j = 0; j < columns_2; j++)
+		{
+			rezult[i][j] = rezult[i - 1][j];
+		}
+	}
+
+	//записываем размер матрицы в первую строку
+	rezult[0][0] = string_1 + 1;
+	rezult[0][1] = columns_2;
+
 	return(rezult);
 }
 
+int size(int size_matrix[4])
+{
+	system("cls");
+	printf("Task 1\n");
+	printf("Error. Перемножение матриц невозможно. Попробуйте еще раз\n");
+
+	for (int i = 0; i < 4; i += 2)
+	{
+		printf("Введите размер матрицы %d\n:", i + 1);
+		scanf_s("%d", &size_matrix[i]);
+		printf(":");
+		scanf_s("%d", &size_matrix[i + 1]);
+	}
+
+	int error = error_multiplication(size_matrix[1], size_matrix[2]);
+	if (error == 0)
+	{
+		size(size_matrix);
+	}
+}
 
 void Matrix()
 {
@@ -149,9 +183,7 @@ void Matrix()
 	int error = error_multiplication(size_matrix[1], size_matrix[2]);
 	if (error == 0)
 	{
-		system("cls");
-		printf("Error.Матрицы перемножить невозможно!");
-		exit(error);
+		size(size_matrix);
 	}
 
 	int** matrix_1 = new(size_matrix[0], size_matrix[1]);
@@ -168,7 +200,11 @@ void Matrix()
 
 	int**rezult = multiplication(matrix_1, matrix_2);
 
+	printf("\nРезульт:\n");
+	cout(rezult);
+
 
 	delete(matrix_1);
 	delete(matrix_2);
+	delete(rezult);
 }
